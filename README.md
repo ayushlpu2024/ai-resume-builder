@@ -1,51 +1,116 @@
-# 🚀 AI Resume Builder
+# 🚀 AI Resume Builder - Detailed Documentation
 
-An AI-powered resume builder that lets users create resumes through a **chat interface** instead of traditional forms.
-
----
-
-## ✨ Features
-
-- 💬 Chat-based resume creation  
-- 🧠 AI extracts structured data in real-time  
-- ⚡ Live resume preview (instant updates)  
-- 🔄 Streaming responses (typing effect)  
-- 💾 Auto-save using localStorage  
+A comprehensive technical overview of the **AI Resume Builder**, focusing on architecture, dual-stream chat processing, and state management.
 
 ---
 
-## 🏗️ Tech Stack
+## 🏗️ Architecture Overview
 
-- **Frontend:** Next.js 15, TypeScript  
+The application is built using a modern full-stack web architecture:
+
+- **Framework:** Next.js 15 (App Router)  
 - **Styling:** Tailwind CSS  
-- **State Management:** Zustand  
-- **AI:** Vercel AI SDK (GPT-4o)  
-- **Deployment:** Vercel  
+- **AI Integration:** Vercel AI SDK (OpenAI GPT-4o)  
+- **Icons:** Lucide React  
+- **State Management:** Custom React Hooks + localStorage  
+- **PDF Generation:** Browser-based (`window.print()`)
 
 ---
 
-## 🧠 How It Works
+## 💬 The Chat System: "The Brain"
 
-### 1. Extraction Mode (Background)
-- User message → AI extracts JSON  
+The core of the application is a **Dual-Stream Processing Model**.
+
+Every user message triggers **two parallel AI processes**:
+1. Data extraction (structured JSON)
+2. Conversational response (chat)
+
+---
+
+## 🧠 1. Data Extraction Mode (`mode: "extract"`)
+
+When a user types:
+
+> "I'm a Senior Developer at Meta since 2021"
+
+### ⚙️ Flow:
+- Frontend sends background request → `/api/chat`
+- AI extracts structured resume data
+
+### 🔧 Implementation:
+- Function: `extractData()` (resume-builder.tsx)  
+- Prompt: `buildExtractionPrompt()`  
+- Output: JSON matching `ResumeData` interface  
+
+### ✅ Result:
 - Resume updates instantly  
-
-### 2. Chat Mode (Conversational)
-- AI asks next questions  
-- Guides user step-by-step  
+- No visible AI response required  
 
 ---
 
-## 🔄 Architecture Flow
+## 💬 2. Conversational Mode (`mode: "chat"`)
 
-```mermaid
-sequenceDiagram
-User->>Frontend: Message
-Frontend->>API: /api/chat (extract)
-API->>AI: Process
-AI-->>Frontend: JSON
-Frontend->>Store: Update Resume
+Handles the **human interaction layer**.
 
-Frontend->>API: /api/chat (chat)
-API->>AI: Ask Next Question
-AI-->>Frontend: Text Response
+### ⚙️ Flow:
+- AI asks next question based on user progress  
+
+### 🔧 Implementation:
+- Function: `triggerAI()`  
+- Prompt: `buildSystemPrompt()`  
+
+### 📤 Output:
+- Streamed text response (typing effect)
+
+### ✅ Result:
+- Feels like chatting with a resume expert  
+
+---
+
+## 🔄 State Synchronization
+
+Uses a **Single Source of Truth** pattern:
+
+📁 `src/hooks/use-resume-store.ts`
+
+### 🔑 Key Components:
+
+- **useResumeStore**  
+  - Stores: `resumeData`, `messages`, `currentStep`
+
+- **Step Controller**  
+  - Flow:  
+    `greeting → name → contact → ... → complete`
+
+- **Auto-Sync**  
+  - Saves data instantly to `localStorage`  
+  - Prevents data loss  
+
+---
+
+## 📑 Resume Preview & Templates
+
+The resume is a **dynamic React component**:
+
+📁 `src/components/resume-preview.tsx`
+
+### ✨ Features:
+
+- 🔄 Real-time rendering from `resumeData`  
+- 🎨 Multiple templates:
+  - Modern  
+  - Classic  
+- 📄 PDF Download:
+  - Uses `window.print()`  
+  - Optimized for A4  
+
+---
+
+## 🛠️ Developer Implementation
+
+### 🔑 Environment Variables
+
+Create a `.env.local` file:
+
+```env
+OPENAI_API_KEY=your_key_here
