@@ -1,36 +1,141 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 AI Resume Builder
 
-## Getting Started
+A modern AI-powered resume builder that feels like chatting with a professional career coach.  
+It collects your details conversationally and generates a structured, ready-to-download resume in real time.
 
-First, run the development server:
+---
 
-```bash
+## ✨ Features
+
+- 💬 Chat-based resume creation (like ChatGPT)  
+- 🧠 Dual AI processing (data + conversation)  
+- ⚡ Real-time resume preview  
+- 💾 Auto-save with `localStorage`  
+- 🎨 Multiple templates (Modern & Classic)  
+- 📥 One-click PDF download  
+- 🔄 Post-generation editing via chat  
+
+---
+
+## 🏗️ Tech Stack
+
+| Layer            | Technology |
+|------------------|-----------|
+| Framework        | Next.js 15 (App Router) |
+| Styling          | Tailwind CSS |
+| AI Integration   | Vercel AI SDK + OpenAI `gpt-4o` |
+| Icons            | Lucide React |
+| State Management | Custom React Hooks |
+| Persistence      | `localStorage` |
+| PDF Export       | Browser Print (`window.print`) |
+
+---
+
+## 🧠 How It Works
+
+The core of the app is a **Dual-Stream AI System** — every user message triggers **two parallel AI processes**.
+
+---
+
+### 1️⃣ Data Extraction Mode (`mode: "extract"`)
+
+Extracts structured resume data from user input.
+
+#### 📌 Example Input
+```text
+"My name is Ayush"
+Output:
+{
+  "fullname": "Ayush"
+}
+📌 Output
+{
+  "fullname": "Ayush"
+}
+
+✅ Updates resume instantly
+❌ No visible AI response required
+
+2️⃣ Conversational Mode (mode: "chat")
+Handles human-like interaction
+Guides user step-by-step
+Streams responses (typewriter effect)
+
+💡 Result
+
+✔️ Smart conversation
+✔️ Structured resume updates
+🔄 State Management Flow
+<p align="center"> <img src="https://github.com/user-attachments/assets/b339bf2e-4478-4399-b20a-e3765bdd621b" width="600" /> </p>
+🧩 Core Architecture
+🗂️ Central Store (useResumeStore)
+
+Manages:
+
+resumeData
+messages
+currentStep
+🪜 Step-Based Flow
+greeting → name → contact → summary → experience → education → skills → complete
+💾 Auto Persistence
+Every update is saved to localStorage
+Users can refresh or return without losing progress
+📄 Resume Preview
+Built as a dynamic React component
+Updates instantly as data changes
+Fully reactive UI
+🎨 Templates
+Modern
+Classic
+
+Templates only affect styling, not data.
+
+📥 PDF Export
+Uses window.print()
+Styled with @media print
+Optimized for A4 format
+⚙️ API Design
+Endpoint: /api/chat
+if (mode === "extract") {
+  // Return structured JSON
+} else {
+  // Return conversational response
+}
+🛠️ Setup Instructions
+1️⃣ Install Dependencies
+npm install
+2️⃣ Add Environment Variables
+
+Create a .env.local file:
+
+OPENAI_API_KEY=your_key_here
+3️⃣ Run the App
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+🚀 User Flow
+👋 AI greets the user
+📋 Collects resume details step-by-step
+⚡ Updates resume in real-time
+✏️ Allows refinement via chat
+📥 Download final PDF
+🔥 Example Commands
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+You can refine your resume like:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+“Make my summary more professional”
+“Fix grammar in experience”
+“Add more impact to achievements”
+🧠 Why This Project is Powerful
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Unlike traditional resume builders:
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+❌ No boring forms
+❌ No manual structuring
+✅ Natural conversation
+✅ Smart data extraction
+✅ Real-time UI sync
+📌 Future Enhancements
+🧩 Multiple resume templates marketplace
+🤖 AI-based job matching
+📄 Cover letter generator
+🔗 LinkedIn import
+📊 Resume scoring system
