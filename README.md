@@ -1,141 +1,98 @@
 # 🚀 AI Resume Builder
 
-A modern AI-powered resume builder that feels like chatting with a professional career coach.  
-It collects your details conversationally and generates a structured, ready-to-download resume in real time.
+A modern, production-ready AI resume builder that feels like chatting with a professional career coach. It collects your details conversationally and generates a structured, ATS-friendly resume in real time.
 
 ---
 
 ## ✨ Features
 
-- 💬 Chat-based resume creation (like ChatGPT)  
-- 🧠 Dual AI processing (data + conversation)  
-- ⚡ Real-time resume preview  
-- 💾 Auto-save with `localStorage`  
-- 🎨 Multiple templates (Modern & Classic)  
-- 📥 One-click PDF download  
-- 🔄 Post-generation editing via chat  
+- **💬 Conversational UI**: Build your resume through a natural chat interface (powered by `gpt-4o`).
+- **🧠 Dual-Stream AI**: Parallel processing for data extraction and conversational guidance.
+- **⚡ Real-Time Preview**: Watch your resume update instantly as you provide information.
+- **💾 Auto-Persistence**: Progress is automatically saved to `localStorage`.
+- **🎨 Professional Templates**: Choose between "Modern" and "Classic" designs.
+- **📥 One-Click Export**: High-quality PDF generation via browser-optimized print styles.
+- **🔄 Smart Refinement**: Ask the AI to "make my summary more professional" or "improve my bullet points" after the initial draft.
 
 ---
 
-## 🏗️ Tech Stack
+## 🏗️ Architecture & Tech Stack
 
 | Layer            | Technology |
 |------------------|-----------|
-| Framework        | Next.js 15 (App Router) |
-| Styling          | Tailwind CSS |
-| AI Integration   | Vercel AI SDK + OpenAI `gpt-4o` |
-| Icons            | Lucide React |
-| State Management | Custom React Hooks |
-| Persistence      | `localStorage` |
-| PDF Export       | Browser Print (`window.print`) |
+| **Framework**    | [Next.js 15](https://nextjs.org/) (App Router) |
+| **Styling**      | [Tailwind CSS](https://tailwindcss.com/) |
+| **AI SDK**       | [Vercel AI SDK](https://sdk.vercel.ai/) |
+| **Model**        | OpenAI `gpt-4o` |
+| **Icons**        | [Lucide React](https://lucide.dev/) |
+| **State**        | Custom React Hooks + `localStorage` |
+| **PDF Export**   | CSS Print Media + `window.print()` |
 
 ---
 
-## 🧠 How It Works
+## 🧠 The Chat System: "The Brain"
 
-The core of the app is a **Dual-Stream AI System** — every user message triggers **two parallel AI processes**.
+The core magic of the application lies in its **Dual-Stream Processing** model. Every user message triggers two distinct AI processes to ensure both a smooth conversation and accurate data updates.
+
+```mermaid
+graph TD
+    UserMsg[User Message] --> ChatInput[Chat Interface]
+    ChatInput -->|Trigger| ExtractAPI[API Chat: Mode Extract]
+    ChatInput -->|Trigger| ConversationalAPI[API Chat: Mode Chat]
+    
+    ExtractAPI -->|JSON| Store[Resume Store]
+    ConversationalAPI -->|Stream| ChatUI[Chat UI]
+    
+    Store -->|Reactive Sync| ResumePreview[Resume Preview Canvas]
+    Store -->|Persistence| LocalStorage[(LocalStorage)]
+```
+
+### 1. Data Extraction Mode (`mode: "extract"`)
+The system sends a background request to the AI with instructions to **only** extract relevant resume data from the user's natural language input.
+- **Input**: *"I worked at Meta as a Senior SWE from 2021 to 2023."*
+- **Output**: `{ "experience": [{ "company": "Meta", "role": "Senior SWE", "years": "2021 - 2023" }] }`
+- **Result**: The resume preview updates instantly without interrupting the conversation.
+
+### 2. Conversational Mode (`mode: "chat"`)
+Simultaneously, a second request handles the human side of the interaction, streaming a conversational reply to guide the user to the next step.
+- **Output**: *"That's impressive experience at Meta! Now, can you tell me about your education?"*
 
 ---
 
-### 1️⃣ Data Extraction Mode (`mode: "extract"`)
+## 🛠️ Getting Started
 
-Extracts structured resume data from user input.
+### 1. Prerequisite
+Ensure you have an **OpenAI API Key**.
 
-#### 📌 Example Input
-```text
-"My name is Ayush"
-Output:
-{
-  "fullname": "Ayush"
-}
-📌 Output
-{
-  "fullname": "Ayush"
-}
-
-✅ Updates resume instantly
-❌ No visible AI response required
-
-2️⃣ Conversational Mode (mode: "chat")
-Handles human-like interaction
-Guides user step-by-step
-Streams responses (typewriter effect)
-
-💡 Result
-
-✔️ Smart conversation
-✔️ Structured resume updates
-🔄 State Management Flow
-<p align="center"> <img src="https://github.com/user-attachments/assets/b339bf2e-4478-4399-b20a-e3765bdd621b" width="600" /> </p>
-🧩 Core Architecture
-🗂️ Central Store (useResumeStore)
-
-Manages:
-
-resumeData
-messages
-currentStep
-🪜 Step-Based Flow
-greeting → name → contact → summary → experience → education → skills → complete
-💾 Auto Persistence
-Every update is saved to localStorage
-Users can refresh or return without losing progress
-📄 Resume Preview
-Built as a dynamic React component
-Updates instantly as data changes
-Fully reactive UI
-🎨 Templates
-Modern
-Classic
-
-Templates only affect styling, not data.
-
-📥 PDF Export
-Uses window.print()
-Styled with @media print
-Optimized for A4 format
-⚙️ API Design
-Endpoint: /api/chat
-if (mode === "extract") {
-  // Return structured JSON
-} else {
-  // Return conversational response
-}
-🛠️ Setup Instructions
-1️⃣ Install Dependencies
+### 2. Installation
+```bash
 npm install
-2️⃣ Add Environment Variables
+# or
+pnpm install
+```
 
-Create a .env.local file:
+### 3. Environment Setup
+Create a `.env.local` file in the root directory:
+```bash
+OPENAI_API_KEY=your_openai_api_key_here
+```
 
-OPENAI_API_KEY=your_key_here
-3️⃣ Run the App
+### 4. Development Server
+```bash
 npm run dev
-🚀 User Flow
-👋 AI greets the user
-📋 Collects resume details step-by-step
-⚡ Updates resume in real-time
-✏️ Allows refinement via chat
-📥 Download final PDF
-🔥 Example Commands
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can refine your resume like:
+---
 
-“Make my summary more professional”
-“Fix grammar in experience”
-“Add more impact to achievements”
-🧠 Why This Project is Powerful
+## 📄 Resume Preview & Export
 
-Unlike traditional resume builders:
+- **Dynamic Templates**: Switch between layouts in the toolbar. This only changes the CSS, keeping your data intact.
+- **PDF Generation**: The "Download PDF" button triggers a specially styled print view (A4 size) to ensure high-quality output for applications.
 
-❌ No boring forms
-❌ No manual structuring
-✅ Natural conversation
-✅ Smart data extraction
-✅ Real-time UI sync
-📌 Future Enhancements
-🧩 Multiple resume templates marketplace
-🤖 AI-based job matching
-📄 Cover letter generator
-🔗 LinkedIn import
-📊 Resume scoring system
+## 🚀 Future Roadmap
+- [ ] Multiple resume templates marketplace
+- [ ] AI-based job description matching (Tailor resume to job)
+- [ ] Cover letter generator based on the current resume
+- [ ] LinkedIn profile import functionality
+- [ ] Real-time grammar and impact scoring
