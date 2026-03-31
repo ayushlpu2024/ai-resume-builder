@@ -1,116 +1,134 @@
-# 🚀 AI Resume Builder - Detailed Documentation
+🚀 AI Resume Builder
 
-A comprehensive technical overview of the **AI Resume Builder**, focusing on architecture, dual-stream chat processing, and state management.
+A modern AI-powered resume builder that feels like chatting with a professional career coach. It collects your details conversationally and generates a structured, ready-to-download resume in real time.
 
----
+📄 Source Documentation:
 
-## 🏗️ Architecture Overview
+✨ Features
+💬 Chat-based resume creation (like ChatGPT)
+🧠 Dual AI processing (data + conversation)
+⚡ Real-time resume preview
+💾 Auto-save with localStorage
+🎨 Multiple templates (Modern & Classic)
+📥 One-click PDF download
+🔄 Post-generation editing via chat
+🏗️ Tech Stack
+Layer	Technology
+Framework	Next.js 15 (App Router)
+Styling	Tailwind CSS
+AI Integration	Vercel AI SDK + OpenAI gpt-4o
+Icons	Lucide React
+State Management	Custom React Hooks
+Persistence	localStorage
+PDF Export	Browser Print (window.print)
+🧠 How It Works
 
-The application is built using a modern full-stack web architecture:
+The core of the app is a Dual-Stream AI System — meaning every user message triggers two parallel processes:
 
-- **Framework:** Next.js 15 (App Router)  
-- **Styling:** Tailwind CSS  
-- **AI Integration:** Vercel AI SDK (OpenAI GPT-4o)  
-- **Icons:** Lucide React  
-- **State Management:** Custom React Hooks + localStorage  
-- **PDF Generation:** Browser-based (`window.print()`)
+1️⃣ Data Extraction Mode (mode: "extract")
+Extracts structured resume data from user input
 
----
+Example input:
 
-## 💬 The Chat System: "The Brain"
+"My name is Ayush"
 
-The core of the application is a **Dual-Stream Processing Model**.
+Output:
+{
+  "Fullname": [
+    {
+      "fullname": "Ayush",
+    }
+  ]
+}
+Updates resume instantly (no visible AI response needed)
+2️⃣ Conversational Mode (mode: "chat")
+Handles human-like interaction
+Guides user step-by-step
+Streams responses with typewriter effect
 
-Every user message triggers **two parallel AI processes**:
-1. Data extraction (structured JSON)
-2. Conversational response (chat)
+💡 Result:
+You get both:
 
----
+✔️ Smart conversation
+✔️ Structured resume updates
+🔄 State Management Flow
+<img width="599" height="576" alt="image" src="https://github.com/user-attachments/assets/b339bf2e-4478-4399-b20a-e3765bdd621b" />
 
-## 🧠 1. Data Extraction Mode (`mode: "extract"`)
+🧩 Core Architecture
+🗂️ Central Store (useResumeStore)
 
-When a user types:
+Manages:
 
-> "I'm a Senior Developer at Meta since 2021"
+resumeData
+messages
+currentStep
+🪜 Step-Based Flow
 
-### ⚙️ Flow:
-- Frontend sends background request → `/api/chat`
-- AI extracts structured resume data
+The app ensures no section is skipped:
 
-### 🔧 Implementation:
-- Function: `extractData()` (resume-builder.tsx)  
-- Prompt: `buildExtractionPrompt()`  
-- Output: JSON matching `ResumeData` interface  
+greeting → name → contact → summary → experience → education → skills → complete
+💾 Auto Persistence
+Every change is saved to localStorage
+Users can refresh or return later without losing progress
+📄 Resume Preview
+Built as a dynamic React component
+Updates instantly as data changes
+Supports multiple templates:
+🎨 Templates
+Modern
+Classic
 
-### ✅ Result:
-- Resume updates instantly  
-- No visible AI response required  
+Templates only affect UI, not data
 
----
+📥 PDF Export
+Uses window.print()
+Styled with @media print
+Optimized for A4 format
+⚙️ API Design
+Endpoint: /api/chat
 
-## 💬 2. Conversational Mode (`mode: "chat"`)
+Handles both AI modes:
 
-Handles the **human interaction layer**.
+if (mode === "extract") {
+  // Return structured JSON
+} else {
+  // Return conversational response
+}
+🛠️ Setup Instructions
+1️⃣ Install Dependencies
+npm install
+2️⃣ Add Environment Variables
 
-### ⚙️ Flow:
-- AI asks next question based on user progress  
+Create .env.local:
 
-### 🔧 Implementation:
-- Function: `triggerAI()`  
-- Prompt: `buildSystemPrompt()`  
-
-### 📤 Output:
-- Streamed text response (typing effect)
-
-### ✅ Result:
-- Feels like chatting with a resume expert  
-
----
-
-## 🔄 State Synchronization
-
-Uses a **Single Source of Truth** pattern:
-
-📁 `src/hooks/use-resume-store.ts`
-
-### 🔑 Key Components:
-
-- **useResumeStore**  
-  - Stores: `resumeData`, `messages`, `currentStep`
-
-- **Step Controller**  
-  - Flow:  
-    `greeting → name → contact → ... → complete`
-
-- **Auto-Sync**  
-  - Saves data instantly to `localStorage`  
-  - Prevents data loss  
-
----
-
-## 📑 Resume Preview & Templates
-
-The resume is a **dynamic React component**:
-
-📁 `src/components/resume-preview.tsx`
-
-### ✨ Features:
-
-- 🔄 Real-time rendering from `resumeData`  
-- 🎨 Multiple templates:
-  - Modern  
-  - Classic  
-- 📄 PDF Download:
-  - Uses `window.print()`  
-  - Optimized for A4  
-
----
-
-## 🛠️ Developer Implementation
-
-### 🔑 Environment Variables
-
-Create a `.env.local` file:
-
-```env
 OPENAI_API_KEY=your_key_here
+3️⃣ Run the App
+npm run dev
+🚀 User Flow
+👋 AI greets user
+📋 Collects resume details step-by-step
+⚡ Updates resume in real-time
+✏️ Allows refinement via chat
+📥 Download final PDF
+🔥 Example Commands (After Completion)
+
+You can refine your resume like:
+
+“Make my summary more professional”
+“Fix grammar in experience”
+“Add more impact to achievements”
+🧠 Why This Project is Powerful
+
+Unlike traditional resume builders:
+
+❌ No boring forms
+❌ No manual structuring
+✅ Natural conversation
+✅ Smart data extraction
+✅ Real-time UI sync
+📌 Future Enhancements
+Multiple resume templates marketplace
+AI-based job matching
+Cover letter generator
+LinkedIn import
+Resume scoring system
