@@ -1,38 +1,54 @@
-🚀 AI Resume Builder
+# 🚀 AI Resume Builder
 
-A modern AI-powered resume builder that feels like chatting with a professional career coach. It collects your details conversationally and generates a structured, ready-to-download resume in real time.
+A modern AI-powered resume builder that feels like chatting with a professional career coach.  
+It collects your details conversationally and generates a structured, ready-to-download resume in real time.
 
-✨ Features
-💬 Chat-based resume creation (like ChatGPT)
-🧠 Dual AI processing (data + conversation)
-⚡ Real-time resume preview
-💾 Auto-save with localStorage
-🎨 Multiple templates (Modern & Classic)
-📥 One-click PDF download
-🔄 Post-generation editing via chat
-🏗️ Tech Stack
-Layer	Technology
-Framework	Next.js 15 (App Router)
-Styling	Tailwind CSS
-AI Integration	Vercel AI SDK + OpenAI gpt-4o
-Icons	Lucide React
-State Management	Custom React Hooks
-Persistence	localStorage
-PDF Export	Browser Print (window.print)
-🧠 How It Works
+---
 
-The core of the app is a Dual-Stream AI System — every user message triggers two parallel AI processes.
+## ✨ Features
 
-1️⃣ Data Extraction Mode (mode: "extract")
+- 💬 Chat-based resume creation (like ChatGPT)  
+- 🧠 Dual AI processing (data + conversation)  
+- ⚡ Real-time resume preview  
+- 💾 Auto-save with `localStorage`  
+- 🎨 Multiple templates (Modern & Classic)  
+- 📥 One-click PDF download  
+- 🔄 Post-generation editing via chat  
+
+---
+
+## 🏗️ Tech Stack
+
+| Layer            | Technology |
+|------------------|-----------|
+| Framework        | Next.js 15 (App Router) |
+| Styling          | Tailwind CSS |
+| AI Integration   | Vercel AI SDK + OpenAI `gpt-4o` |
+| Icons            | Lucide React |
+| State Management | Custom React Hooks |
+| Persistence      | `localStorage` |
+| PDF Export       | Browser Print (`window.print`) |
+
+---
+
+## 🧠 How It Works
+
+The core of the app is a **Dual-Stream AI System** — every user message triggers **two parallel AI processes**.
+
+---
+
+### 1️⃣ Data Extraction Mode (`mode: "extract"`)
 
 Extracts structured resume data from user input.
 
-Example Input:
-
+#### 📌 Example Input
+```text
 "My name is Ayush"
-
 Output:
-
+{
+  "fullname": "Ayush"
+}
+📌 Output
 {
   "fullname": "Ayush"
 }
@@ -45,12 +61,12 @@ Handles human-like interaction
 Guides user step-by-step
 Streams responses (typewriter effect)
 
-💡 Result:
+💡 Result
 
 ✔️ Smart conversation
 ✔️ Structured resume updates
 🔄 State Management Flow
-<img width="599" height="576" alt="Architecture Diagram" src="https://github.com/user-attachments/assets/b339bf2e-4478-4399-b20a-e3765bdd621b" />
+<p align="center"> <img src="https://github.com/user-attachments/assets/b339bf2e-4478-4399-b20a-e3765bdd621b" width="600" /> </p>
 🧩 Core Architecture
 🗂️ Central Store (useResumeStore)
 
@@ -60,9 +76,6 @@ resumeData
 messages
 currentStep
 🪜 Step-Based Flow
-
-Ensures no section is skipped:
-
 greeting → name → contact → summary → experience → education → skills → complete
 💾 Auto Persistence
 Every update is saved to localStorage
@@ -83,9 +96,6 @@ Styled with @media print
 Optimized for A4 format
 ⚙️ API Design
 Endpoint: /api/chat
-
-Handles both AI modes:
-
 if (mode === "extract") {
   // Return structured JSON
 } else {
@@ -107,7 +117,7 @@ npm run dev
 ⚡ Updates resume in real-time
 ✏️ Allows refinement via chat
 📥 Download final PDF
-🔥 Example Commands (After Completion)
+🔥 Example Commands
 
 You can refine your resume like:
 
