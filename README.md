@@ -2,8 +2,6 @@
 
 A modern AI-powered resume builder that feels like chatting with a professional career coach. It collects your details conversationally and generates a structured, ready-to-download resume in real time.
 
-📄 Source Documentation:
-
 ✨ Features
 💬 Chat-based resume creation (like ChatGPT)
 🧠 Dual AI processing (data + conversation)
@@ -23,37 +21,36 @@ Persistence	localStorage
 PDF Export	Browser Print (window.print)
 🧠 How It Works
 
-The core of the app is a Dual-Stream AI System — meaning every user message triggers two parallel processes:
+The core of the app is a Dual-Stream AI System — every user message triggers two parallel AI processes.
 
 1️⃣ Data Extraction Mode (mode: "extract")
-Extracts structured resume data from user input
 
-Example input:
+Extracts structured resume data from user input.
+
+Example Input:
 
 "My name is Ayush"
 
 Output:
+
 {
-  "Fullname": [
-    {
-      "fullname": "Ayush",
-    }
-  ]
+  "fullname": "Ayush"
 }
-Updates resume instantly (no visible AI response needed)
+
+✅ Updates resume instantly
+❌ No visible AI response required
+
 2️⃣ Conversational Mode (mode: "chat")
 Handles human-like interaction
 Guides user step-by-step
-Streams responses with typewriter effect
+Streams responses (typewriter effect)
 
 💡 Result:
-You get both:
 
 ✔️ Smart conversation
 ✔️ Structured resume updates
 🔄 State Management Flow
-<img width="599" height="576" alt="image" src="https://github.com/user-attachments/assets/b339bf2e-4478-4399-b20a-e3765bdd621b" />
-
+<img width="599" height="576" alt="Architecture Diagram" src="https://github.com/user-attachments/assets/b339bf2e-4478-4399-b20a-e3765bdd621b" />
 🧩 Core Architecture
 🗂️ Central Store (useResumeStore)
 
@@ -64,21 +61,21 @@ messages
 currentStep
 🪜 Step-Based Flow
 
-The app ensures no section is skipped:
+Ensures no section is skipped:
 
 greeting → name → contact → summary → experience → education → skills → complete
 💾 Auto Persistence
-Every change is saved to localStorage
-Users can refresh or return later without losing progress
+Every update is saved to localStorage
+Users can refresh or return without losing progress
 📄 Resume Preview
 Built as a dynamic React component
 Updates instantly as data changes
-Supports multiple templates:
+Fully reactive UI
 🎨 Templates
 Modern
 Classic
 
-Templates only affect UI, not data
+Templates only affect styling, not data.
 
 📥 PDF Export
 Uses window.print()
@@ -99,13 +96,13 @@ if (mode === "extract") {
 npm install
 2️⃣ Add Environment Variables
 
-Create .env.local:
+Create a .env.local file:
 
 OPENAI_API_KEY=your_key_here
 3️⃣ Run the App
 npm run dev
 🚀 User Flow
-👋 AI greets user
+👋 AI greets the user
 📋 Collects resume details step-by-step
 ⚡ Updates resume in real-time
 ✏️ Allows refinement via chat
@@ -127,8 +124,8 @@ Unlike traditional resume builders:
 ✅ Smart data extraction
 ✅ Real-time UI sync
 📌 Future Enhancements
-Multiple resume templates marketplace
-AI-based job matching
-Cover letter generator
-LinkedIn import
-Resume scoring system
+🧩 Multiple resume templates marketplace
+🤖 AI-based job matching
+📄 Cover letter generator
+🔗 LinkedIn import
+📊 Resume scoring system
