@@ -1,4 +1,4 @@
-import { createOpenAI } from "@ai-sdk/openai";
+import { bedrock } from "@ai-sdk/amazon-bedrock";
 import { streamText } from "ai";
 import { buildSystemPrompt, buildExtractionPrompt } from "@/lib/prompts";
 import type { ConversationStep, ResumeData } from "@/types/resume";
@@ -6,9 +6,8 @@ import type { ConversationStep, ResumeData } from "@/types/resume";
 // Allow streaming responses up to 60 seconds
 export const maxDuration = 60;
 
-const openai = createOpenAI({
-  apiKey: process.env.OPENAI_API_KEY ?? "",
-});
+// AWS Bedrock configuration - ensure AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and AWS_REGION are set in .env.local
+const model = bedrock("anthropic.claude-3-5-sonnet-20240620-v1:0");
 
 /**
  * POST /api/chat
@@ -41,7 +40,7 @@ export async function POST(request: Request) {
     );
 
     const result = await streamText({
-      model: openai("gpt-4o"),
+      model,
       messages: [{ role: "user", content: extractionPrompt }],
       temperature: 0.1,
     });
@@ -60,7 +59,7 @@ export async function POST(request: Request) {
     ];
 
   const result = await streamText({
-    model: openai("gpt-4o"),
+    model,
     messages,
     temperature: 0.7,
     maxOutputTokens: 1024,
