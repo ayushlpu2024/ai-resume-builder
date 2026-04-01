@@ -131,7 +131,7 @@ export default function ResumeBuilder() {
       step: ConversationStep,
       userMsg: string,
       currentData: ResumeData
-    ): Promise<ResumeData> => {
+    ): Promise<{ updatedData: ResumeData; suggestedNextStep?: ConversationStep }> => {
       try {
         const res = await fetch("/api/chat", {
           method: "POST",
@@ -144,7 +144,7 @@ export default function ResumeBuilder() {
           }),
         });
 
-        if (!res.ok) return currentData;
+        if (!res.ok) return { updatedData: currentData };
 
         const reader = res.body?.getReader();
         const decoder = new TextDecoder();
@@ -164,11 +164,19 @@ export default function ResumeBuilder() {
           cleaned = cleaned.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "");
         }
 
-        const parsed = JSON.parse(cleaned) as ResumeData;
-        return parsed;
+        // The AI now returns { updatedData: ResumeData, suggestedNextStep: ConversationStep }
+        const parsed = JSON.parse(cleaned) as {
+          updatedData: ResumeData;
+          suggestedNextStep?: ConversationStep;
+        };
+
+        return {
+          updatedData: parsed.updatedData || currentData,
+          suggestedNextStep: parsed.suggestedNextStep,
+        };
       } catch (err) {
         console.error("Extraction error:", err);
-        return currentData;
+        return { updatedData: currentData };
       }
     },
     []
@@ -180,14 +188,23 @@ export default function ResumeBuilder() {
       addMessage("user", text);
 
       // 1. Extract structured data in background
-      const updatedData = await extractData(currentStep, text, resumeData);
+      // This now handles intelligence: auto-correction, summary refinement, and flexible section updates
+      const { updatedData, suggestedNextStep } = await extractData(
+        currentStep,
+        text,
+        resumeData
+      );
+
+      // 2. Local State Sync
       updateResumeData(updatedData);
 
-      // 2. Advance step
-      const nextStep = NEXT_STEP[currentStep];
+      // 3. Smart Step Progression
+      // If the AI suggests a next step (e.g., if multiple fields were filled or it was an update), use it.
+      // Otherwise, use the standard sequence.
+      const nextStep = suggestedNextStep || NEXT_STEP[currentStep];
       setCurrentStep(nextStep);
 
-      // 3. Stream AI response for the new step
+      // 4. Stream AI response for the new step
       await triggerAI(nextStep, text, updatedData);
     },
     [
